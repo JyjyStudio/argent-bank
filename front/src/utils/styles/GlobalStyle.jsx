@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
 export default function GlobalStyle() {
-	
 	return <StyledGlobalStyle />
 }
 
@@ -30,6 +29,10 @@ const StyledGlobalStyle = createGlobalStyle`
 		color: #2c3e50;
 	}
 
+	html {
+		scroll-behavior: smooth;
+	}
+
 	.sr-only{
 		position: absolute;
 		width: 1px;
@@ -50,5 +53,44 @@ const StyledGlobalStyle = createGlobalStyle`
 		position: absolute !important;
 		width: 1px !important;
 		white-space: nowrap !important;
+	}
+	// Animation du spinner 
+	@keyframes rotate-spinner {
+		0% {
+			transform: rotate(0deg);
+			box-shadow : 1px 3px 2px lightgreen;
+		}
+		50% {
+			transform: rotate(180deg);
+			box-shadow : 1px 3px 2px green;
+		}
+		100% {
+			transform: rotate(360deg);
+			box-shadow : 1px 3px 2px lightblue;
+		}
+	}
+	@keyframes fade {
+		0% {
+			background: rgba(#000000, .6);
+			opacity: 1;
+		}
+		90% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+			
+		}
+	}
+	@keyframes scale {
+		0% {
+			transform: scale(1);
+		}
+		90% {
+			transform: scale(1);
+		}
+		100% {
+			transform: scale(0);
+		}
 	}
 `
