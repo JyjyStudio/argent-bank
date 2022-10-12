@@ -1,47 +1,59 @@
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 export default function User() {
-	// if user connected return name + logout 
-	// else return login
-  return (
-	<Container>
-      <UserInfos>
-        <H1>Welcome back<br />Tony Jarvis!</H1>
-        <EditButton>Edit Name</EditButton>
-      </UserInfos>
-      <h2 className="sr-only">Accounts</h2>
-      <AccountSection>
-        <AccountContent>
-          <H3>Argent Bank Checking (x8349)</H3>
-          <Amount>$2,082.79</Amount>
-          <p>Available Balance</p>
-        </AccountContent>
-        <AccountCTA>
-          <TransactionsButton>View transactions</TransactionsButton>
-        </AccountCTA>
-      </AccountSection>
-      <AccountSection>
-        <AccountContent>
-          <H3>Argent Bank Savings (x6712)</H3>
-          <Amount>$10,928.42</Amount>
-          <p>Available Balance</p>
-        </AccountContent>
-        <AccountCTA>
-          <TransactionsButton>View transactions</TransactionsButton>
-        </AccountCTA>
-      </AccountSection>
-      <AccountSection>
-        <AccountContent>
-          <H3>Argent Bank Credit Card (x8349)</H3>
-          <Amount>$184.30</Amount>
-          <p>Current Balance</p>
-        </AccountContent>
-        <AccountCTA>
-          <TransactionsButton>View transactions</TransactionsButton>
-        </AccountCTA>
-      </AccountSection>
-    </Container>
-  )
+	
+	const navigate = useNavigate()
+	// token from redux store
+	const userToken = localStorage.getItem('userToken')
+	// if userToken does not exists => go to login page, else render the profile page
+
+	const { data } = useSelector((state) => state.authentication)
+	console.log(data);
+
+	if(!userToken) {
+		navigate('/login')
+	}
+	else return (
+		<Container>
+		<UserInfos>
+			<H1>Welcome back<br />Tony Jarvis!</H1>
+			<EditButton>Edit Name</EditButton>
+		</UserInfos>
+		<h2 className="sr-only">Accounts</h2>
+		<AccountSection>
+			<AccountContent>
+			<H3>Argent Bank Checking (x8349)</H3>
+			<Amount>$2,082.79</Amount>
+			<p>Available Balance</p>
+			</AccountContent>
+			<AccountCTA>
+			<TransactionsButton>View transactions</TransactionsButton>
+			</AccountCTA>
+		</AccountSection>
+		<AccountSection>
+			<AccountContent>
+			<H3>Argent Bank Savings (x6712)</H3>
+			<Amount>$10,928.42</Amount>
+			<p>Available Balance</p>
+			</AccountContent>
+			<AccountCTA>
+			<TransactionsButton>View transactions</TransactionsButton>
+			</AccountCTA>
+		</AccountSection>
+		<AccountSection>
+			<AccountContent>
+			<H3>Argent Bank Credit Card (x8349)</H3>
+			<Amount>$184.30</Amount>
+			<p>Current Balance</p>
+			</AccountContent>
+			<AccountCTA>
+			<TransactionsButton>View transactions</TransactionsButton>
+			</AccountCTA>
+		</AccountSection>
+		</Container>
+	)
 }
 
 const Container = styled.main`
