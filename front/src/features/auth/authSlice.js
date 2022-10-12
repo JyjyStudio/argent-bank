@@ -10,56 +10,56 @@ export const authSlice = createSlice({
 		data: null,
 		// l'erreur lorsque la requête échoue
 		error: null,
+		logged: false
 	},
 	reducers: {
 		// la requête est en cours
 		fetching: (state) => {
-			// si le statut est void
+			// si le statut est void on passe le status en pending
 			if (state.status === 'void') {
-				// on passe en pending
 				state.status = 'pending'
 			}
-			// si le statut est rejected
+			// si le statut est rejected on supprime l'erreur et on passe en pending
 			if (state.status === 'rejected') {
-				// on supprime l'erreur et on passe en pending
 				state.error = null
 				state.status = 'pending'
 			}
-			// si le statut est resolved
+			// si le statut est resolved on passe en updating (requête en cours mais des données sont déjà présentes)
 			if (state.status === 'resolved') {
-				// on passe en updating (requête en cours mais des données sont déjà présentent)
 				state.status = 'updating'
 			}
-			// sinon l'action est ignorée
+			// sinon l'action est ignorée 
 			return
 		},
 		// la requête a fonctionné
 		resolved: (state, action) => {
-			// si la requête est en cours
+			// si la requête est en cours on passe en resolved et on sauvegarde les données
 			if (state.status === 'pending' || state.status === 'updating') {
-				// on passe en resolved et on sauvegarde les données
 				state.data = action.payload
 				state.status = 'resolved'
-				return
 			}
 			// sinon l'action est ignorée
 			return
 		},
 		// la requête a échoué
 		rejected: (state, action) => {
-			// si la requête est en cours
+			// si la requête est en cours on passe en rejected, on sauvegarde l'erreur et on supprime les données
 			if (state.status === 'pending' || state.status === 'updating') {
-				// on passe en rejected, on sauvegarde l'erreur et on supprime les données
 				state.status = 'rejected'
 				state.error = JSON.parse(action.payload)
 				state.data = null
-				return
 			}
 			// sinon l'action est ignorée
 			return
 		},
+		logIn: (state) => {
+			state.logged = true
+		},
+		logOut: (state) => {
+			state.logged = false
+		}
 	},
 })
 
 // actions creator
-export const { fetching, resolved, rejected } = authSlice.actions
+export const { fetching, resolved, rejected, logIn, logOut } = authSlice.actions
