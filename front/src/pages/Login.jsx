@@ -1,25 +1,49 @@
 import styled from 'styled-components'
 import Img from '../components/Img'
 import SignInIcon from '../assets/icon-login.png'
-import StyledLink from '../components/StyledLink'
 import { useState } from 'react'
+import { checkUser } from '../features/auth/checkUser'
+import { store } from '../utils/redux/store'
+import { useSelector } from 'react-redux'
+import Loader from '../components/Loader'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export default function Login() {
+	
+	//local state
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [rememberMe, setRememberMe] = useState(false)
 
-	const postData = (e) => {
-		e.preventDefault()
-		console.log(email, password, rememberMe)
-	}
+	// redux state
+	const { status, error } = useSelector((state) => state.authentication)
 
+	// loading state and token from redux store
+	const loading = status === 'pending'
+	const userToken = localStorage.getItem('userToken')
+
+	// redirect to profil page if userToken exists
+	const navigate = useNavigate()
+	useEffect(() => {
+	  userToken && navigate('/profile')
+	}, [userToken, navigate])
+
+	// submit handler
+	const handleSubmit = (event) => {
+		event.preventDefault()
+		checkUser(store, email, password)
+	}
+	// view
 	return (
 		<Container>
-			<FormContainer onSubmit={(e) => postData(e)}>
-				<Img src={SignInIcon} alt="Sign In icon" width="30px" />
-				<h1>Sign In</h1>
-				<form>
+			{loading && <Loader />}
+			<FormContainer>
+				<div>
+					<Img src={SignInIcon} alt="Sign In icon" width="30px" />
+					<h1>Sign In</h1>
+				</div>
+				<form onSubmit={handleSubmit}>
 					<InputContainer>
 						<label htmlFor="email">Email</label>
 						<input
@@ -55,6 +79,7 @@ export default function Login() {
 					</CheckboxContainer>
 
 					<SignInButton type="submit" value="Sign In" />
+					<Error>{error && error.displayedError}</Error>
 				</form>
 			</FormContainer>
 		</Container>
@@ -117,4 +142,9 @@ const SignInButton = styled.input`
 	cursor: pointer;
 	border: none;
 	text-decoration: underline;
+`
+const Error = styled.p`
+	color: red;
+	font-size: 1rem;
+	margin-top: 1rem;
 `
