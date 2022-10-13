@@ -7,11 +7,16 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import GlobalStyle from './utils/styles/GlobalStyle'
 import Footer from './components/Footer'
-import User from './pages/User'
+import Profile from './pages/Profile'
 import { Provider } from 'react-redux'
-import { store } from './utils/redux/store'
+// @ts-ignore
+import { store } from './utils/redux/store.ts'
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
+// testing if we have a root element before invoking ReactDOM.createRoot (typescript)
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Failed to find the root element')
+
+const root = ReactDOM.createRoot(rootElement)
 root.render(
 	<Provider store={store}>
 		<BrowserRouter basename={process.env.PUBLIC_URL}>
@@ -20,10 +25,9 @@ root.render(
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/login" element={<Login />} />
-				<Route path="/profile" element={<User />} />
+				<Route path="/profile" element={<Profile />} />
 			</Routes>
 			<Footer />
 		</BrowserRouter>
 	</Provider>
 )
-
