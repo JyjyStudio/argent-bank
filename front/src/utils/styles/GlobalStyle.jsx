@@ -69,28 +69,4 @@ const StyledGlobalStyle = createGlobalStyle`
 			box-shadow : 1px 3px 2px lightblue;
 		}
 	}
-	@keyframes fade {
-		0% {
-			background: rgba(#000000, .6);
-			opacity: 1;
-		}
-		90% {
-			opacity: 1;
-		}
-		100% {
-			opacity: 0;
-			
-		}
-	}
-	@keyframes scale {
-		0% {
-			transform: scale(1);
-		}
-		90% {
-			transform: scale(1);
-		}
-		100% {
-			transform: scale(0);
-		}
-	}
 `
