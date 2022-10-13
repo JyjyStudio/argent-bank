@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 export default function Loader() {
 	return (
-		<SpinnerContainer>
-			<Spinner />
-		</SpinnerContainer>
+	<SpinnerContainer>
+		<Spinner />
+	</SpinnerContainer>
 	)
 }
 
@@ -14,17 +14,14 @@ const SpinnerContainer = styled.div`
 	align-items: center;
 	text-align: center;
 	position: fixed;
-	top: 2rem;
 	width: 100%;
 	min-height: 100%;
-	animation: scale 3000ms ease-in-out;
-	transform: scale(0);
+	transform: translateY(3rem)
 `
-
 const Spinner = styled.div`
 	position: absolute;
-	height: 5rem;
-	width: 5rem;
+	height: 3rem;
+	width: 3rem;
 	border-radius: 50%;
 	animation: rotate-spinner 600ms ease-in-out infinite;
 `
