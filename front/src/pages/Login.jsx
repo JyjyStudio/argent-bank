@@ -1,39 +1,39 @@
 import styled from 'styled-components'
 import Img from '../components/Img'
 import SignInIcon from '../assets/icon-login.png'
-import { useState } from 'react'
-import { checkUser } from '../features/auth/checkUser'
-import { store } from '../utils/redux/store'
-import { useSelector } from 'react-redux'
 import Loader from '../components/Loader'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { asyncGetToken } from '../features/authentication/authenticationSlice'
+import { getStatus,	getErrorMsg, getTokenFromState } from '../features/authentication/selectors'
 
 export default function Login() {
-	
 	//local state
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [rememberMe, setRememberMe] = useState(false)
 
-	// redux state
-	const { status, error } = useSelector((state) => state.authentication)
-
-	// loading state and token from redux store
+	// redux state & token
+	const userToken = useSelector(getTokenFromState)
+	const status = useSelector(getStatus)
+	const displayedError = useSelector(getErrorMsg)
 	const loading = status === 'pending'
-	const userToken = localStorage.getItem('userToken')
 
 	// redirect to profil page if userToken exists
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
+
 	useEffect(() => {
-	  userToken && navigate('/profile')
+		userToken && navigate('/profile')
 	}, [userToken, navigate])
 
 	// submit handler
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		checkUser(store, email, password)
+		dispatch(asyncGetToken({email, password}))
 	}
+
 	// view
 	return (
 		<Container>
@@ -79,7 +79,7 @@ export default function Login() {
 					</CheckboxContainer>
 
 					<SignInButton type="submit" value="Sign In" />
-					<Error>{error && error.displayedError}</Error>
+					<Error>{displayedError}</Error>
 				</form>
 			</FormContainer>
 		</Container>
