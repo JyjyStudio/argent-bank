@@ -1,15 +1,15 @@
 import styled from 'styled-components'
-import StyledLink from './StyledLink'
+import { Link } from "react-router-dom"
 import Img from './Img'
 import Logo from '../assets/argentBankLogo.png'
 import SignInIcon from '../assets/icon-login.png'
 import SignOutIcon from '../assets/icon-logout.png'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { resetAuth } from '../features/authentication/authenticationSlice'
 import { asyncGetInfos, resetUser } from '../features/user/userSlice'
 import { getTokenFromState } from '../features/authentication/selectors'
 import { getUserInfosFromState } from '../features/user/selectors'
+import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 
 /**
  * The top and left navbar
@@ -19,14 +19,14 @@ import { getUserInfosFromState } from '../features/user/selectors'
  */
 export default function Navbar() {
 	// user token from redux store
-	const userToken = useSelector(getTokenFromState)
-	const userInfos = useSelector(getUserInfosFromState)
+	const userToken = useTsSelector(getTokenFromState)
+	const userInfos = useTsSelector(getUserInfosFromState)
 
-	const dispatch = useDispatch()
+	const dispatch = useTsDispatch()
 
 	useEffect(() => {
-		userToken && dispatch(asyncGetInfos(userToken))
-	}, [dispatch, userToken])
+		(!userInfos.firstname && userToken) && dispatch(asyncGetInfos(userToken))
+	}, [dispatch, userToken, userInfos.firstname])
 
 
 	const resetCredentials = () => {
@@ -36,9 +36,9 @@ export default function Navbar() {
 
 	return (
 		<Nav>
-			<StyledLink to="/">
+			<Link to="/">
 				<Img src={Logo} width="200px" alt="logo argentBank" />
-			</StyledLink>
+			</Link>
 			{
 				/* if user connected return name + logout else return login */
 				userToken ? (
@@ -52,7 +52,7 @@ export default function Navbar() {
 							/>
 							<Span>{userInfos.firstname}</Span>
 						</NavLink>
-						<NavLink onClick={resetCredentials}>
+						<Button onClick={resetCredentials}>
 							<Img
 								src={SignOutIcon}
 								width="20px"
@@ -60,7 +60,7 @@ export default function Navbar() {
 								alt="sign in"
 							/>
 							<Span>Sign Out</Span>
-						</NavLink>
+						</Button>
 					</SignOutContainer>
 				) : (
 					<NavLink to="/login">
@@ -97,7 +97,27 @@ const Span = styled.span`
 	color: #2c3e50;
 	margin-right: 1rem;
 `
-const NavLink = styled(StyledLink)`
+const NavLink = styled(Link)`
 	display: flex;
 	align-items: center;
+	color: inherit;
+	text-decoration: none;
+	margin-left: 5px;
+	:hover {
+		text-decoration: underline;
+	}
+`
+const Button = styled.button`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    color: #2c3e50;
+	background-color: transparent;
+	font-weight: bold;
+	font-size: 1rem;
+	cursor: pointer;
+	border: none;
+	:hover {
+		text-decoration: underline
+	}
 `
