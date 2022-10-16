@@ -5,29 +5,20 @@ import PropTypes from 'prop-types'
 /**
  * Component to create a card
  * @name Card
- * @param {string} imgSrc - path of the icon.
- * @param {string} imgLabel - label of the icon.
- * @param {string} title - title of the card.
- * @param {string} text - text of the card.
- * @param {string} width - width of the icon.
- * @param {string} height - height of the icon.
- * @param {string} margin - margin of the icon.
- * @returns {ReactElement} a card with an icon.
  * @component
+ * @returns {ReactComponentElement} a card with an icon.
  */
-export default function Card({imgSrc, imgLabel, title, text, width, height, margin}) {
+export default function Card({imgSrc, imgLabel, title, text, width, height, margin}: Props){
   return (
-	<>
-		<StyledCard $width={width} $height={height} $margin={margin}>
+		<CardContainer $width={width} $height={height} $margin={margin}>
 			<Img src={imgSrc} alt={imgLabel} />
 			<H3>{title}</H3>
 			<Content>{text}</Content>
-		</StyledCard>		
-	</>
+		</CardContainer>		
   )
 }
 
-const StyledCard = styled.article`
+const CardContainer = styled.article<CardContainerTypes>`
 	width: ${({$width}) => $width};
 	height: ${({$height}) => $height};
 	margin: ${({$margin}) => $margin};
@@ -57,4 +48,19 @@ Card.propTypes = {
 	width : PropTypes.string,
 	height : PropTypes.string,
 	margin : PropTypes.string,
+}
+interface Props {
+	imgSrc?: string
+	imgLabel?: string
+	title?: string
+	text?: string
+	width?: string
+	height?: string
+	margin?: string
+}
+
+interface CardContainerTypes {
+	$width?: string
+	$height?: string
+	$margin?: string
 }

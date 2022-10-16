@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import Img from '../components/Img'
 import SignInIcon from '../assets/icon-login.png'
 import Loader from '../components/Loader'
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 import { useNavigate } from 'react-router-dom'
 import { asyncGetToken } from '../features/authentication/authenticationSlice'
 import { getStatus,	getErrorMsg, getTokenFromState } from '../features/authentication/selectors'
@@ -15,21 +15,21 @@ export default function Login() {
 	const [rememberMe, setRememberMe] = useState(false)
 
 	// redux state & token
-	const userToken = useSelector(getTokenFromState)
-	const status = useSelector(getStatus)
-	const displayedError = useSelector(getErrorMsg)
+	const userToken = useTsSelector(getTokenFromState)
+	const status = useTsSelector(getStatus)
+	const displayedError = useTsSelector(getErrorMsg)
 	const loading = status === 'pending'
 
 	// redirect to profil page if userToken exists
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
+	const dispatch = useTsDispatch()
 
 	useEffect(() => {
 		userToken && navigate('/profile')
 	}, [userToken, navigate])
 
 	// submit handler
-	const handleSubmit = (event) => {
+	const handleSubmit = (event : React.ChangeEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		dispatch(asyncGetToken({email, password}))
 	}

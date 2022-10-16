@@ -11,4 +11,5 @@ export default function Home() {
 	)
 }
 
-const HomeContainer = styled.main``
+const HomeContainer = styled.main`
+`
