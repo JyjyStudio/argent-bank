@@ -1,57 +1,69 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import React from 'react'
-import { RootState } from '../../utils/redux/store'
+import axios, { AxiosError } from 'axios'
+import { AppDispatch } from '../../utils/redux/store'
+
+interface Resolved {
+	status: number,
+	message: string,
+	body: {token: string}
+}
+interface Rejected {
+	error?: AxiosError
+	displayedError?: string
+}
+interface UserCredentials { email: string; password: string }
+
+interface InitialState {
+	status: string
+	response: null | Resolved & Rejected
+	token: null | string
+}
 
 //creation d'une partie de notre store (slice). Contient le nom du slice, son state initial et les reducers+
-const initialState = {
+const initialState: InitialState = {
 	status: 'void',
 	response: null,
-	error: null,
-	logged: false,
 	token: null,
 }
 
-export const authenticationSlice: RootState = createSlice({
+export const authenticationSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
 		// la requête est en cours
-		fetching: (state: RootState) => {
+		fetching: (state) => {
 			// si le statut est void on passe le status en pending
 			if (state.status === 'void') {
 				state.status = 'pending'
 			}
 			// si le statut est rejected on supprime l'erreur et on passe en updating
 			if (state.status === 'rejected') {
-				state.error = null
-				state.status = 'updating'
+				state.response = null
+				state.status = 'pending'
 			}
 			// si le statut est resolved on passe en updating (requête en cours mais des données sont déjà présentes)
 			if (state.status === 'resolved') {
 				state.status = 'updating'
-				state.logged = true
 			}
 		},
 		// la requête a fonctionné
-		resolved: (state: RootState, action: PayloadAction<Resolved> ) => {
+		resolved: (state, action: PayloadAction<Resolved> ) => {
 			// si la requête est en cours on passe en resolved et on sauvegarde les données
 			if (state.status === 'pending' || state.status === 'updating') {
 				state.status = 'resolved'
 				state.response = action.payload
 				state.token = action.payload.body.token
-				state.logged = true
 			}
 		},
 		// la requête a échoué
-		rejected: (state: RootState, action: PayloadAction<string>) => {
+		rejected: (state, action: PayloadAction<string>) => {
 			// si la requête est en cours on passe en rejected, on sauvegarde l'erreur
 			if (state.status === 'pending' || state.status === 'updating') {
 				state.status = 'rejected'
-				state.error = JSON.parse(action.payload)
+				state.response = JSON.parse(action.payload)
 			}
 		},
-		resetAuth: (state: RootState) => initialState,
+		resetAuth: (state) => initialState,
 	},
 })
 
@@ -59,7 +71,7 @@ export const authenticationSlice: RootState = createSlice({
 export const { fetching, resolved, rejected, resetAuth } = authenticationSlice.actions
 
 // async fetching to get token
-export const asyncGetToken = (userInfos: UserInfos) => async (dispatch: React.FC) => {
+export const asyncGetToken = (userInfos: UserCredentials) => async (dispatch: AppDispatch) => {
 	dispatch(fetching())
 
 	const headers = {
@@ -86,7 +98,3 @@ export const asyncGetToken = (userInfos: UserInfos) => async (dispatch: React.FC
 		}
 	}
 }
-
-
-interface Resolved { body: { token: string } }
-interface UserInfos { email: string; password: string }
