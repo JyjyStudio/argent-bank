@@ -12,12 +12,12 @@ import { getUserInfosFromState } from '../features/user/selectors'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 
 /**
- * The top and left navbar
+ * The navbar component
  * @name Navbar
- * @returns {ReactElement} the navbar
+ * @returns {JSX.Element} a navbar
  * @component
  */
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
 	// user token from redux store
 	const userToken = useTsSelector(getTokenFromState)
 	const userInfos = useTsSelector(getUserInfosFromState)
@@ -48,7 +48,7 @@ export default function Navbar() {
 								src={SignInIcon}
 								width="25px"
 								margin="0 5px 0 0"
-								alt="sign in"
+								alt="profile icon"
 							/>
 							<Span>{userInfos.firstname}</Span>
 						</NavLink>
@@ -57,7 +57,7 @@ export default function Navbar() {
 								src={SignOutIcon}
 								width="20px"
 								margin="0 5px 0 0"
-								alt="sign in"
+								alt="sign out icon"
 							/>
 							<Span>Sign Out</Span>
 						</Button>
@@ -68,7 +68,7 @@ export default function Navbar() {
 							src={SignInIcon}
 							width="25px"
 							margin="0 5px 0 0"
-							alt="sign in"
+							alt="sign in icon"
 						/>
 						<Span>Sign In</Span>
 					</NavLink>
