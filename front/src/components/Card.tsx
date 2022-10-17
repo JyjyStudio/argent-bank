@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
  * Component to create a card
  * @name Card
  * @component
- * @returns {ReactComponentElement} a card with an icon.
+ * @returns {JSX.Element} a card with an icon.
  */
-export default function Card({imgSrc, imgLabel, title, text, width, height, margin}: Props){
+export default function Card({imgSrc, imgLabel, title, text, width, height, margin}: Props): JSX.Element{
   return (
 		<CardContainer $width={width} $height={height} $margin={margin}>
 			<Img src={imgSrc} alt={imgLabel} />
