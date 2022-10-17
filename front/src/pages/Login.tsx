@@ -37,7 +37,7 @@ export default function Login() {
 	// view
 	return (
 		<Container>
-			{loading && <Loader />}
+			{loading && <Loader bottom='22%'/>}
 			<FormContainer>
 				<div>
 					<Img src={SignInIcon} alt="Sign In icon" width="30px" />
@@ -79,7 +79,7 @@ export default function Login() {
 					</CheckboxContainer>
 
 					<SignInButton type="submit" value="Sign In" />
-					<Error>{displayedError}</Error>
+					<Error>{displayedError && displayedError}</Error>
 				</form>
 			</FormContainer>
 		</Container>
