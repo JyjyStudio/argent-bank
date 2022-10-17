@@ -2,23 +2,29 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { authenticationSlice } from '../../features/authentication/authenticationSlice'
 import { userSlice } from '../../features/user/userSlice'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
-import sessionStorage from 'redux-persist/lib/storage/session'
-
+import storage from 'redux-persist/lib/storage'
 
 // creation et configuration du store
 
-const persistConfig = {
+const rootPersistConfig = {
 	key: 'state',
-	storage: sessionStorage,
+	storage,
 	version: 1,
+	blacklist: ['authentication']
+}
+const authPersistConfig = {
+	key: 'auth',
+	storage,
+	version: 1,
+	blacklist: ['response']
 }
 
 const rootReducer = combineReducers({
-	authentication: authenticationSlice.reducer,
+	authentication: persistReducer(authPersistConfig, authenticationSlice.reducer),
 	userInfos: userSlice.reducer,
 })
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 
 export const store = configureStore({
 	reducer: persistedReducer,
