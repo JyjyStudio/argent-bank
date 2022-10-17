@@ -4,6 +4,6 @@ export const getAuthenticationResponse = (state: RootState) => state.authenticat
 
 export const getStatus = (state: RootState) => state.authentication.status
 
-export const getErrorMsg = (state: RootState) => state.authentication.error?.displayedError
+export const getErrorMsg = (state: RootState) => state.authentication.response?.displayedError
 
 export const getTokenFromState = (state: RootState) => state.authentication.token
