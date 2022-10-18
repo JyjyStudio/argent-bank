@@ -6,9 +6,15 @@ import React, { useState, useEffect } from 'react'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 import { useNavigate } from 'react-router-dom'
 import { asyncGetToken } from '../features/authentication/authenticationSlice'
-import { getStatus,	getErrorMsg, getTokenFromState } from '../features/authentication/selectors'
+import { getStatus, getErrorMsg, getTokenFromState } from '../features/authentication/selectors'
 
-export default function Login() {
+/**
+ * login page
+ * @name Profile
+ * @component
+ * @returns {JSX.Element} the login page.
+ */
+export default function Login():JSX.Element {
 	//local state
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -29,59 +35,61 @@ export default function Login() {
 	}, [userToken, navigate])
 
 	// submit handler
-	const handleSubmit = (event : React.ChangeEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		dispatch(asyncGetToken({email, password}))
+		dispatch(asyncGetToken({ email, password }))
 	}
 
 	// view
 	return (
 		<Container>
-			{loading && <Loader bottom='22%'/>}
-			<FormContainer>
-				<div>
-					<Img src={SignInIcon} alt="Sign In icon" width="30px" />
-					<h1>Sign In</h1>
-				</div>
-				<form onSubmit={handleSubmit}>
-					<InputContainer>
-						<label htmlFor="email">Email</label>
-						<input
-							type="text"
-							id="email"
-							value={email}
-							onChange={(e) => {
-								setEmail(e.target.value)
-							}}
-						/>
-					</InputContainer>
-					<InputContainer>
-						<label htmlFor="password">Password</label>
-						<input
-							type="password"
-							id="password"
-							autoComplete="on"
-							value={password}
-							onChange={(e) => {
-								setPassword(e.target.value)
-							}}
-						/>
-					</InputContainer>
-					<CheckboxContainer>
-						<input
-							type="checkbox"
-							id="remember-me"
-							onClick={() => {
-								setRememberMe(!rememberMe)
-							}}
-						/>
-						<label htmlFor="remember-me">Remember me</label>
-					</CheckboxContainer>
+			{loading && <Loader bottom="22%" />}
+			{!userToken && (
+				<FormContainer>
+					<div>
+						<Img src={SignInIcon} alt="Sign In icon" width="30px" />
+						<h1>Sign In</h1>
+					</div>
+					<form onSubmit={handleSubmit}>
+						<InputContainer>
+							<label htmlFor="email">Email</label>
+							<input
+								type="text"
+								id="email"
+								value={email}
+								onChange={(e) => {
+									setEmail(e.target.value)
+								}}
+							/>
+						</InputContainer>
+						<InputContainer>
+							<label htmlFor="password">Password</label>
+							<input
+								type="password"
+								id="password"
+								autoComplete="on"
+								value={password}
+								onChange={(e) => {
+									setPassword(e.target.value)
+								}}
+							/>
+						</InputContainer>
+						<CheckboxContainer>
+							<input
+								type="checkbox"
+								id="remember-me"
+								onClick={() => {
+									setRememberMe(!rememberMe)
+								}}
+							/>
+							<label htmlFor="remember-me">Remember me</label>
+						</CheckboxContainer>
 
-					<SignInButton type="submit" value="Sign In" />
-					<Error>{displayedError && displayedError}</Error>
-				</form>
-			</FormContainer>
+						<SignInButton type="submit" value="Sign In" />
+						<Error>{displayedError && displayedError}</Error>
+					</form>
+				</FormContainer>
+			)}
 		</Container>
 	)
 }
