@@ -3,11 +3,13 @@ import { authenticationSlice } from '../../features/authentication/authenticatio
 import { userSlice } from '../../features/user/userSlice'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import { userSliceV2 } from '../../features/user/userSliceV2'
+import { themeSlice } from '../../features/theme/themeSlice'
 
 // creation et configuration du store
 
-const rootPersistConfig = {
-	key: 'state',
+const userPersistConfig = {
+	key: 'user',
 	storage,
 	version: 1,
 	blacklist: ['authentication']
@@ -18,16 +20,20 @@ const authPersistConfig = {
 	version: 1,
 	blacklist: ['response']
 }
+const themePersistConfig = {
+	key: 'theme',
+	storage,
+	version: 1,
+}
 
 const rootReducer = combineReducers({
 	authentication: persistReducer(authPersistConfig, authenticationSlice.reducer),
-	userInfos: userSlice.reducer,
+	userInfos: persistReducer(userPersistConfig, userSliceV2.reducer),
+	theme: persistReducer(themePersistConfig, themeSlice.reducer)
 })
 
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
-
 export const store = configureStore({
-	reducer: persistedReducer,
+	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
