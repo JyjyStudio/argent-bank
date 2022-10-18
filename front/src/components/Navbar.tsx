@@ -4,9 +4,8 @@ import Img from './Img'
 import Logo from '../assets/argentBankLogo.png'
 import SignInIcon from '../assets/icon-login.png'
 import SignOutIcon from '../assets/icon-logout.png'
-import { useEffect } from 'react'
 import { resetAuth } from '../features/authentication/authenticationSlice'
-import { asyncGetInfos, resetUser } from '../features/user/userSlice'
+import { resetUser } from '../features/user/userSliceV2'
 import { getTokenFromState } from '../features/authentication/selectors'
 import { getUserInfosFromState } from '../features/user/selectors'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
@@ -23,11 +22,6 @@ export default function Navbar(): JSX.Element {
 	const userInfos = useTsSelector(getUserInfosFromState)
 
 	const dispatch = useTsDispatch()
-
-	useEffect(() => {
-		(!userInfos.firstname && userToken) && dispatch(asyncGetInfos(userToken))
-	}, [dispatch, userToken, userInfos.firstname])
-
 
 	const resetCredentials = () => {
 		dispatch(resetAuth())
