@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Img = styled.img<ImgTypes>`
@@ -14,19 +13,6 @@ const Img = styled.img<ImgTypes>`
 	overflow: ${({ overflow }) => overflow};
 `
 export default Img
-
-Img.propTypes = {
-	width: PropTypes.string,
-	height: PropTypes.string,
-	margin: PropTypes.string,
-	borderRadius: PropTypes.string,
-	display: PropTypes.string,
-	filter: PropTypes.string,
-	cursor: PropTypes.string,
-	transition: PropTypes.string,
-	cover: PropTypes.string,
-	overflow: PropTypes.string,
-}
 
 type ImgTypes = {
 	width?: string | number,
