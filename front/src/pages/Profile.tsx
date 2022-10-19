@@ -56,11 +56,11 @@ export default function Profile(): JSX.Element {
 
 	const saveName = () => {
 		// visual feedback: if no firstname or lastname, add class error (red shadow on input)
-		!firstnameInput.current?.value && firstnameInput.current?.classList.add('error')
-		!lastnameInput.current?.value && lastnameInput.current?.classList.add('error')
+		!firstnameInput.current?.value.trim() && firstnameInput.current?.classList.add('error')
+		!lastnameInput.current?.value.trim() && lastnameInput.current?.classList.add('error')
 
 		// validation: we want to have a firstname and a lastname before sending data
-		if (firstname && lastname) {
+		if (firstname.trim() && lastname.trim()) {
 			dispatch(editUser(user))
 			setIsEditing(false)
 		}
