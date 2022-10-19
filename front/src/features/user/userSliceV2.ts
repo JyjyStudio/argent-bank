@@ -24,11 +24,16 @@ export const userSliceV2 = createSlice({
 		})
 		builder.addCase(getUserInfos.rejected, (state, action) => {
 			state.status = 'rejected'
+			console.log(action.payload) 
 		})
 		builder.addCase(editUser.fulfilled, (state, action) => {
 			state.status = 'resolved'
 			state.firstname = action.payload.body.firstName
 			state.lastname = action.payload.body.lastName
+		})
+		builder.addCase(editUser.rejected, (state, action) => {
+			state.status = 'rejected'
+			console.log(action.payload) 
 		})
 	},
 })
@@ -51,7 +56,9 @@ export const getUserInfos = createAsyncThunk(
 			)
 			return response.data
 		} catch (err) {
-			return rejectWithValue(err)
+			if (axios.isAxiosError(err)) {
+				return rejectWithValue(err.message)
+			}
 		}
 	}
 )
@@ -72,7 +79,9 @@ export const editUser = createAsyncThunk(
 			)
 			return response.data
 		} catch (err) {
-			return rejectWithValue(err)
+			if (axios.isAxiosError(err)) {
+				return rejectWithValue(err.message)
+			}
 		}
 	}
 )
