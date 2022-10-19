@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { authenticationSlice } from '../../features/authentication/authenticationSlice'
-import { userSlice } from '../../features/user/userSlice'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { userSliceV2 } from '../../features/user/userSliceV2'
@@ -18,7 +17,7 @@ const authPersistConfig = {
 	key: 'auth',
 	storage,
 	version: 1,
-	blacklist: ['response']
+	blacklist: ['status', 'response']
 }
 const themePersistConfig = {
 	key: 'theme',
