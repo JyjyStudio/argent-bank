@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { UserAxios } from './userInstance'
 import axios from 'axios'
 
 //creation d'une partie de notre store (slice). Contient le nom du slice, son state initial et les reducers
@@ -14,19 +15,19 @@ export const userSliceV2 = createSlice({
 		resetUser: (state) => initialState
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getUserInfos.pending, (state, action) => {
+		builder.addCase(getUserInfos.pending, (state) => {
 			state.status = 'pending'
 		})
-		builder.addCase(getUserInfos.fulfilled, (state, action) => {
+		builder.addCase(getUserInfos.fulfilled, (state, action: PayloadAction<Resolved>) => {
 			state.status = 'resolved'
 			state.firstname = action.payload.body.firstName
 			state.lastname = action.payload.body.lastName
 		})
-		builder.addCase(getUserInfos.rejected, (state, action) => {
+		builder.addCase(getUserInfos.rejected, (state, action: PayloadAction<any>) => {
 			state.status = 'rejected'
 			console.log(action.payload) 
 		})
-		builder.addCase(editUser.fulfilled, (state, action) => {
+		builder.addCase(editUser.fulfilled, (state, action: PayloadAction<Resolved>) => {
 			state.status = 'resolved'
 			state.firstname = action.payload.body.firstName
 			state.lastname = action.payload.body.lastName
@@ -43,17 +44,8 @@ export const { resetUser } = userSliceV2.actions
 export const getUserInfos = createAsyncThunk(
 	'user/getInfos',
 	async (token: Token, { rejectWithValue }) => {
-		const headers = {
-			accept: 'application/json',
-			Authorization: 'Bearer ' + token,
-		}
-
 		try {
-			const response = await axios.post(
-				'http://localhost:3001/api/v1/user/profile',
-				token,
-				{ headers }
-			)
+			const response = await UserAxios(token).post('')
 			return response.data
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
@@ -66,17 +58,8 @@ export const getUserInfos = createAsyncThunk(
 export const editUser = createAsyncThunk(
 	'user/editUser',
 	async (user: UserInfos, { rejectWithValue }) => {
-		const headers = {
-			accept: 'application/json',
-			Authorization: 'Bearer ' + user.token,
-		}
-
 		try {
-			const response = await axios.put(
-				'http://localhost:3001/api/v1/user/profile',
-				user.body,
-				{ headers }
-			)
+			const response = await UserAxios(user.token).put('', user.body)
 			return response.data
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
@@ -85,8 +68,6 @@ export const editUser = createAsyncThunk(
 		}
 	}
 )
-
-
 
 interface InitialState {
 	status: string,
@@ -97,9 +78,15 @@ interface InitialState {
 type Token = null | string
 
 interface UserInfos {
-	token: null | string,
+	token: Token,
 	body: {
 		firstName: null | string,
 		lastName: null | string
+	}
+}
+interface Resolved {
+	body: {
+		firstName: string
+		lastName: string
 	}
 }
