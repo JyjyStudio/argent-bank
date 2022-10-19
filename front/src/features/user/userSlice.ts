@@ -41,7 +41,6 @@ export const asyncGetInfos = (token: string) => async (dispatch: AppDispatch) =>
 	}
 
 	try {
-
 		const response = await axios.post('http://localhost:3001/api/v1/user/profile', token, { headers })
 		dispatch(getInfos(response.data))
 		

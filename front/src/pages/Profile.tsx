@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getTokenFromState, getStatus } from '../features/authentication/selectors'
-import { getUserInfosFromState, getUserInfosStatus } from '../features/user/selectors'
+import { getUserInfosFromState } from '../features/user/selectors'
 import { getUserInfos, editUser } from '../features/user/userSliceV2'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
-import { getTheme } from '../features/theme/selector'
 import styled from 'styled-components'
-import Loader from '../components/Loader'
 
 /**
  * user's profile page
@@ -19,7 +17,6 @@ export default function Profile(): JSX.Element {
 	const userToken = useTsSelector(getTokenFromState)
 	const userInfos = useTsSelector(getUserInfosFromState)
 	const authStatus = useTsSelector(getStatus)
-	const userStatus = useTsSelector(getUserInfosStatus)
 	const dispatch = useTsDispatch()
 	const navigate = useNavigate()
 
@@ -34,17 +31,14 @@ export default function Profile(): JSX.Element {
 
 	// if userToken does not exists => go to login page, else render the profile page
 	useEffect(() => {
-		// fist time on the profile page and after authentication is done
-		if (authStatus === 'resolved' && userStatus === 'void') {
-			dispatch(getUserInfos(userToken))
-		}
+		dispatch(getUserInfos(userToken))
 
 		// navigate to login page if user doesn't have a token
 		!userToken && navigate('/login')
 
 		// set the focus on the input on editing
 		firstnameInput.current?.focus()
-	}, [userToken, authStatus, userStatus, navigate, dispatch, isEditing])
+	}, [userToken, authStatus, navigate, dispatch, isEditing])
 
 	const user = {
 		token: userToken,
@@ -56,8 +50,10 @@ export default function Profile(): JSX.Element {
 
 	const saveName = () => {
 		// visual feedback: if no firstname or lastname, add class error (red shadow on input)
-		!firstnameInput.current?.value && firstnameInput.current?.classList.add('error')
-		!lastnameInput.current?.value && lastnameInput.current?.classList.add('error')
+		!firstnameInput.current?.value &&
+			firstnameInput.current?.classList.add('error')
+		!lastnameInput.current?.value &&
+			lastnameInput.current?.classList.add('error')
 
 		// validation: we want to have a firstname and a lastname before sending data
 		if (firstname && lastname) {
@@ -69,123 +65,108 @@ export default function Profile(): JSX.Element {
 		event.currentTarget.classList.remove('error')
 	}
 
-	const theme = useTsSelector(getTheme)
-
 	return (
-		<Container theme={theme}>
-			{(userStatus === 'void' || userStatus === 'pending') ? (
-				<Loader bottom="50%" />
-			) : (
-				<>
-					<UserInfos theme={theme}>
-						{isEditing ? (
-							<>
-								<H1>Welcome back</H1>
-								<EditContainer>
-									<div>
-										<StyledInput
-											ref={firstnameInput}
-											type="text"
-											value={firstname}
-											placeholder={userInfos.firstname?.toString()}
-											onFocus={resetError}
-											onChange={(e) => {
-												setFirstname(e.target.value)
-											}}
-										/>
-										<StyledInput
-											ref={lastnameInput}
-											type="text"
-											value={lastname}
-											placeholder={userInfos.lastname?.toString()}
-											onFocus={resetError}
-											onChange={(e) => {
-												setLastname(e.target.value)
-											}}
-										/>
-									</div>
-									<EditButtonsContainer>
-										<EditButton
-											padding="10px 2rem"
-											onClick={saveName}
-										>
-											Save
-										</EditButton>
-										<EditButton
-											padding="10px 2rem"
-											onClick={() => setIsEditing(false)}
-										>
-											Cancel
-										</EditButton>
-									</EditButtonsContainer>
-								</EditContainer>
-							</>
-						) : (
-							<>
-								<H1>
-									Welcome back
-									<br />
-									{userInfos.firstname} {userInfos.lastname} !
-								</H1>
+		<Container>
+			<UserInfos>
+				{isEditing ? (
+					<>
+						<H1>Welcome back</H1>
+						<EditContainer>
+							<div>
+								<StyledInput
+									ref={firstnameInput}
+									type="text"
+									value={firstname}
+									placeholder={userInfos.firstname?.toString()}
+									onFocus={resetError}
+									onChange={(e) => {
+										setFirstname(e.target.value)
+									}}
+								/>
+								<StyledInput
+									ref={lastnameInput}
+									type="text"
+									value={lastname}
+									placeholder={userInfos.lastname?.toString()}
+									onFocus={resetError}
+									onChange={(e) => {
+										setLastname(e.target.value)
+									}}
+								/>
+							</div>
+							<EditButtonsContainer>
 								<EditButton
-									padding="10px 1rem"
-									onClick={() => setIsEditing(true)}
+									padding="10px 2rem"
+									onClick={saveName}
 								>
-									Edit Name
+									Save
 								</EditButton>
-							</>
-						)}
-					</UserInfos>
-					<h2 className="sr-only">Accounts</h2>
-					<AccountSection>
-						<AccountContent>
-							<H3>Argent Bank Checking (x8349)</H3>
-							<Amount>$2,082.79</Amount>
-							<p>Available Balance</p>
-						</AccountContent>
-						<AccountCTA>
-							<TransactionsButton>
-								View transactions
-							</TransactionsButton>
-						</AccountCTA>
-					</AccountSection>
-					<AccountSection>
-						<AccountContent>
-							<H3>Argent Bank Savings (x6712)</H3>
-							<Amount>$10,928.42</Amount>
-							<p>Available Balance</p>
-						</AccountContent>
-						<AccountCTA>
-							<TransactionsButton>
-								View transactions
-							</TransactionsButton>
-						</AccountCTA>
-					</AccountSection>
-					<AccountSection>
-						<AccountContent>
-							<H3>Argent Bank Credit Card (x8349)</H3>
-							<Amount>$184.30</Amount>
-							<p>Current Balance</p>
-						</AccountContent>
-						<AccountCTA>
-							<TransactionsButton>
-								View transactions
-							</TransactionsButton>
-						</AccountCTA>
-					</AccountSection>
-				</>
-			)}
+								<EditButton
+									padding="10px 2rem"
+									onClick={() => setIsEditing(false)}
+								>
+									Cancel
+								</EditButton>
+							</EditButtonsContainer>
+						</EditContainer>
+					</>
+				) : (
+					<>
+						<H1>
+							Welcome back
+							<br />
+							{userInfos.firstname} {userInfos.lastname} !
+						</H1>
+						<EditButton
+							padding="10px 1rem"
+							onClick={() => setIsEditing(true)}
+						>
+							Edit Name
+						</EditButton>
+					</>
+				)}
+			</UserInfos>
+			<h2 className="sr-only">Accounts</h2>
+			<AccountSection>
+				<AccountContent>
+					<H3>Argent Bank Checking (x8349)</H3>
+					<Amount>$2,082.79</Amount>
+					<p>Available Balance</p>
+				</AccountContent>
+				<AccountCTA>
+					<TransactionsButton>View transactions</TransactionsButton>
+				</AccountCTA>
+			</AccountSection>
+			<AccountSection>
+				<AccountContent>
+					<H3>Argent Bank Savings (x6712)</H3>
+					<Amount>$10,928.42</Amount>
+					<p>Available Balance</p>
+				</AccountContent>
+				<AccountCTA>
+					<TransactionsButton>View transactions</TransactionsButton>
+				</AccountCTA>
+			</AccountSection>
+			<AccountSection>
+				<AccountContent>
+					<H3>Argent Bank Credit Card (x8349)</H3>
+					<Amount>$184.30</Amount>
+					<p>Current Balance</p>
+				</AccountContent>
+				<AccountCTA>
+					<TransactionsButton>View transactions</TransactionsButton>
+				</AccountCTA>
+			</AccountSection>
 		</Container>
 	)
 }
 
 const Container = styled.main`
-	background-color: ${({ theme }) =>
-		theme === 'dark' ? '#12002b' : '#ecf0f1'};
+	background-color: #12002b;
 	flex: 1;
 `
 const UserInfos = styled.div`
-	color: ${({ theme }) => (theme === 'dark' ? '#ecf0f1' : '#12002b')};
+	color: #ecf0f1;
 	margin-bottom: 2rem;
 `
 const H1 = styled.h1`
