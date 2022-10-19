@@ -43,7 +43,7 @@ export default function Login():JSX.Element {
 	// view
 	return (
 		<Container>
-			{loading && <Loader bottom="22%" />}
+			{loading && <Loader bottom="20%" />}
 			{!userToken && (
 				<FormContainer>
 					<div>
@@ -85,7 +85,7 @@ export default function Login():JSX.Element {
 							<label htmlFor="remember-me">Remember me</label>
 						</CheckboxContainer>
 
-						<SignInButton type="submit" value="Sign In" />
+						<SignInButton type="submit">Sign In</SignInButton>
 						<Error>{displayedError && displayedError}</Error>
 					</form>
 				</FormContainer>
@@ -124,6 +124,7 @@ const FormContainer = styled.section`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	border-radius: 5px;
 	img {
 		margin: 0 auto;
 	}
@@ -133,11 +134,15 @@ const InputContainer = styled.div`
 	flex-direction: column;
 	text-align: left;
 	margin-bottom: 1rem;
+	border-radius: 3px;
+	label {
+		margin-bottom: 7px;
+	}
 `
 const CheckboxContainer = styled.div`
 	display: flex;
 `
-const SignInButton = styled.input`
+const SignInButton = styled.button`
 	color: #fff;
 	display: block;
 	width: 100%;
@@ -148,7 +153,7 @@ const SignInButton = styled.input`
 	border-color: #00bc77;
 	background-color: #00bc77;
 	cursor: pointer;
-	border: none;
+	border-radius: 3px;
 	text-decoration: underline;
 `
 const Error = styled.p`
