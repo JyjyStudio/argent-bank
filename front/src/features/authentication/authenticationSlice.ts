@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 import { AppDispatch } from '../../utils/redux/store'
+import { AuthInstance } from './authInstance'
 
 interface Resolved {
 	status: number,
@@ -74,14 +75,8 @@ export const { fetching, resolved, rejected, resetAuth } = authenticationSlice.a
 export const asyncGetToken = (userInfos: UserCredentials) => async (dispatch: AppDispatch) => {
 	dispatch(fetching())
 
-	const headers = {
-		accept: 'application/json',
-		'Content-Type': 'application/json',
-	}
-
 	try {
-
-		const response = await axios.post('http://localhost:3001/api/v1/user/login', userInfos, { headers })
+		const response = await AuthInstance.post('', userInfos)
 		dispatch(resolved(response.data))
 		
 	} catch (error) {
