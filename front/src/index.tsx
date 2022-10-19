@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import { Provider } from 'react-redux'
 import { persistor, store } from './utils/redux/store'
 import { PersistGate } from 'redux-persist/integration/react'
+import NotFount from './pages/404'
 
 // testing if we have a root element before invoking ReactDOM.createRoot (typescript)
 const rootElement = document.getElementById('root')
@@ -27,6 +28,7 @@ root.render(
 					<Route path="/" element={<Home />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/profile" element={<Profile />} />
+					<Route path="*" element={<NotFount />} />
 				</Routes>
 				<Footer />
 			</BrowserRouter>
