@@ -5,8 +5,8 @@ import Loader from '../components/Loader'
 import React, { useState, useEffect } from 'react'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 import { useNavigate } from 'react-router-dom'
-import { asyncGetToken } from '../features/authentication/authenticationSlice'
-import { getStatus, getErrorMsg, getTokenFromState } from '../features/authentication/selectors'
+import { getToken } from '../features/authentication/authenticationSlice'
+import { getStatus, getResponse, getTokenFromState } from '../features/authentication/selectors'
 
 /**
  * login page
@@ -23,8 +23,8 @@ export default function Login():JSX.Element {
 	// redux state & token
 	const userToken = useTsSelector(getTokenFromState)
 	const status = useTsSelector(getStatus)
-	const displayedError = useTsSelector(getErrorMsg)
-	const loading = status === 'pending'
+	const displayedError = useTsSelector(getResponse)
+	const loading: boolean = status === 'pending'
 
 	// redirect to profil page if userToken exists
 	const navigate = useNavigate()
@@ -37,7 +37,7 @@ export default function Login():JSX.Element {
 	// submit handler
 	const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		dispatch(asyncGetToken({ email, password }))
+		dispatch(getToken({ email, password }))
 	}
 
 	// view
