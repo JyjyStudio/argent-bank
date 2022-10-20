@@ -1,56 +1,92 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { userInstance } from './userInstance'
 import axios from 'axios'
-import { AppDispatch } from '../../utils/redux/store'
 
-interface InitialState {
-	firstname: null | string
-	lastname: null | string
-}
-interface User {
-	body: {
-		firstName: null | string
-		lastName: null | string
-	}
-}
-
-//creation d'une partie de notre store (slice). Contient le nom du slice, son state initial et les reducers+
+//creation d'une partie de notre store (slice). Contient le nom du slice, son state initial et les reducers
 const initialState: InitialState = {
+	status: 'void',
 	firstname: null,
 	lastname: null,
 }
-export const userSlice = createSlice({
+export const userSliceV2 = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		getInfos: (state, action: PayloadAction<User>) => {
+		resetUser: (state) => initialState
+	},
+	extraReducers: (builder) => {
+		builder.addCase(getUserInfos.pending, (state) => {
+			state.status = 'pending'
+		})
+		builder.addCase(getUserInfos.fulfilled, (state, action: PayloadAction<Resolved>) => {
+			state.status = 'resolved'
 			state.firstname = action.payload.body.firstName
 			state.lastname = action.payload.body.lastName
-		},
-		resetUser: (state) => initialState,
+		})
+		builder.addCase(getUserInfos.rejected, (state, action: PayloadAction<any>) => {
+			state.status = 'rejected'
+			console.log(action.payload) 
+		})
+		builder.addCase(editUser.fulfilled, (state, action: PayloadAction<Resolved>) => {
+			state.status = 'resolved'
+			state.firstname = action.payload.body.firstName
+			state.lastname = action.payload.body.lastName
+		})
+		builder.addCase(editUser.rejected, (state, action) => {
+			state.status = 'rejected'
+			console.log(action.payload) 
+		})
 	},
 })
 
-// actions creator
-export const { getInfos, resetUser } = userSlice.actions
+export const { resetUser } = userSliceV2.actions 
 
-// async fetching to user informations
-export const asyncGetInfos = (token: string) => async (dispatch: AppDispatch) => {
-	const headers = {
-		accept: 'application/json',
-		Authorization: 'Bearer ' + token,
-	}
-
-	try {
-
-		const response = await axios.post('http://localhost:3001/api/v1/user/profile', token, { headers })
-		dispatch(getInfos(response.data))
-		
-	} catch (error) {
-		if (axios.isAxiosError(error) && error.response) {
-			JSON.stringify({
-				error,
-				displayedError: 'incorrect email/password',
-			})
+export const getUserInfos = createAsyncThunk(
+	'user/getInfos',
+	async (token: Token, { rejectWithValue }) => {
+		try {
+			const response = await userInstance(token).post('')
+			return response.data
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				return rejectWithValue(err.message)
+			}
 		}
+	}
+)
+
+export const editUser = createAsyncThunk(
+	'user/editUser',
+	async (user: UserInfos, { rejectWithValue }) => {
+		try {
+			const response = await userInstance(user.token).put('', user.body)
+			return response.data
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				return rejectWithValue(err.message)
+			}
+		}
+	}
+)
+
+interface InitialState {
+	status: string,
+	firstname: null | string
+	lastname: null | string
+}
+
+type Token = null | string
+
+interface UserInfos {
+	token: Token,
+	body: {
+		firstName: null | string,
+		lastName: null | string
+	}
+}
+interface Resolved {
+	body: {
+		firstName: string
+		lastName: string
 	}
 }
