@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { authenticationSlice } from '../../features/authentication/authenticationSlice'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { userSliceV2 } from '../../features/user/userSliceV2'
+import { userSliceV2 } from '../../features/user/userSlice'
 import { themeSlice } from '../../features/theme/themeSlice'
 
 // creation et configuration du store
@@ -11,13 +11,13 @@ const userPersistConfig = {
 	key: 'user',
 	storage,
 	version: 1,
-	blacklist: ['authentication']
+	blacklist: ['authentication'],
 }
 const authPersistConfig = {
 	key: 'auth',
 	storage,
 	version: 1,
-	blacklist: ['status', 'response']
+	blacklist: ['status', 'response'],
 }
 const themePersistConfig = {
 	key: 'theme',
@@ -26,19 +26,22 @@ const themePersistConfig = {
 }
 
 const rootReducer = combineReducers({
-	authentication: persistReducer(authPersistConfig, authenticationSlice.reducer),
+	authentication: persistReducer(
+		authPersistConfig,
+		authenticationSlice.reducer
+	),
 	userInfos: persistReducer(userPersistConfig, userSliceV2.reducer),
-	theme: persistReducer(themePersistConfig, themeSlice.reducer)
+	theme: persistReducer(themePersistConfig, themeSlice.reducer),
 })
 
 export const store = configureStore({
 	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoredActions: [ FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER ],
+			},
+		}),
 	devTools: process.env.NODE_ENV !== 'production',
 })
 

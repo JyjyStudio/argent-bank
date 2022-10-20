@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 import Img from './Img'
 import Logo from '../assets/argentBankLogo.png'
 import SignInIcon from '../assets/icon-login.png'
 import SignOutIcon from '../assets/icon-logout.png'
 import { resetAuth } from '../features/authentication/authenticationSlice'
-import { resetUser } from '../features/user/userSliceV2'
+import { resetUser } from '../features/user/userSlice'
 import { getTokenFromState } from '../features/authentication/selectors'
 import { getUserInfosFromState } from '../features/user/selectors'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
@@ -105,13 +105,13 @@ const Button = styled.button`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-    color: #2c3e50;
+	color: #2c3e50;
 	background-color: transparent;
 	font-weight: bold;
 	font-size: 1rem;
 	cursor: pointer;
 	border: none;
 	:hover {
-		text-decoration: underline
+		text-decoration: underline;
 	}
 `
