@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getTokenFromState, getStatus } from '../features/authentication/selectors'
 import { getUserInfosFromState, getUserInfosStatus } from '../features/user/selectors'
-import { getUserInfos, editUser } from '../features/user/userSliceV2'
+import { getUserInfos, editUser } from '../features/user/userSlice'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 import { getTheme } from '../features/theme/selector'
 import styled from 'styled-components'
@@ -56,8 +56,10 @@ export default function Profile(): JSX.Element {
 
 	const saveName = () => {
 		// visual feedback: if no firstname or lastname, add class error (red shadow on input)
-		!firstnameInput.current?.value.trim() && firstnameInput.current?.classList.add('error')
-		!lastnameInput.current?.value.trim() && lastnameInput.current?.classList.add('error')
+		!firstnameInput.current?.value.trim() &&
+			firstnameInput.current?.classList.add('error')
+		!lastnameInput.current?.value.trim() &&
+			lastnameInput.current?.classList.add('error')
 
 		// validation: we want to have a firstname and a lastname before sending data
 		if (firstname.trim() && lastname.trim()) {
