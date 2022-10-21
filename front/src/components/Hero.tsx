@@ -1,7 +1,13 @@
 import styled from 'styled-components'
 import HeroImg from '../assets/bank-tree.jpeg'
 
-export default function Hero() {
+/**
+ * The hero component
+ * @name Hero
+ * @returns {JSX.Element} the homepage's hero
+ * @component
+ */
+export default function Hero(): JSX.Element {
 	return (
 		<Contrainer>
 			<HeroContent>

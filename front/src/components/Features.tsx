@@ -4,7 +4,13 @@ import MoneyIcon from '../assets/icon-money.png'
 import SecurityIcon from '../assets/icon-security.png'
 import Card from './Card'
 
-export default function Features() {
+/**
+ * The Feature Homepage component
+ * @name Features
+ * @returns {JSX.Element} the homepage features section
+ * @component
+ */
+export default function Features(): JSX.Element {
 	const ChatText = "Need to talk to a representative? You can get in touch through our 24/7 chat or through a phone call in less than 5 minutes."
 	const MoneyText = "The more you save with us, the higher your interest rate will be!"
 	const securityText = "We use top of the line encryption to make sure your data and money is always safe."

@@ -2,7 +2,13 @@ import styled from 'styled-components'
 import Features from '../components/Features'
 import Hero from "../components/Hero"
 
-export default function Home() {
+/**
+ * The Home page
+ * @name Home
+ * @returns {JSX.Element} the home page.
+ * @component
+ */
+export default function Home(): JSX.Element {
 	return (
 		<HomeContainer>
 			<Hero />

@@ -10,7 +10,7 @@ import { getStatus, getResponse, getTokenFromState } from '../features/authentic
 
 /**
  * login page
- * @name Profile
+ * @name Login
  * @component
  * @returns {JSX.Element} the login page.
  */
