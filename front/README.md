@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# ARGENT BANK
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ArgentBank is a banking application for individuals. Project 13 of the OpenClassrooms "Web app developer - JavaScript React" course. For this project I'm using TypeScript, React, React Router, and Redux-toolkit.
 
-## Available Scripts
 
-In the project directory, you can run:
+![homepage](https://raw.githubusercontent.com/JyjyStudio/argent-bank/main/front/src/assets/homepage.png "homepage")
 
-### `npm start`
+**Useful links:**
+- [Live demo 🌍](https://jyjystudio.github.io/argent-bank/) 
+- [Repository 📖](https://github.com/JyjyStudio/argent-bank/tree/main/front)
+- [Back end Repository 📖](https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API)
+- [Api Documentation 📖](https://app.swaggerhub.com/apis-docs/JyjyStudio/bank-argent_transaction_api_documentation/1.0.0#/Transactions%20Module/put_transactions)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Prerequisites**
 
-### `npm test`
+- NodeJS version 12.18
+- Yarn version 1.22.19 or npm version 8.15.0
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+**BackEnd**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To get the backend, clone this repository and follow the instructions [here](https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**FrontEnd**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone this repository
+   ```sh
+   git clone https://github.com/JyjyStudio/argent-bank.git
+   ```
+2. Install packages
+   ```sh
+   yarn or npm i
+   ```
+3. Run the project (port 3000 by default)
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+   ```sh
+   yarn start or npm start
+   ```
+ 
