@@ -6,7 +6,7 @@ ArgentBank is a banking application for individuals. Project 13 of the OpenClass
 ![homepage](https://raw.githubusercontent.com/JyjyStudio/argent-bank/main/front/src/assets/homepage.png "homepage")
 
 **Useful links:**
-- [Live demo 🌍](https://jyjystudio.github.io/argent-bank/) 
+<!-- - [Live demo 🌍](https://jyjystudio.github.io/argent-bank/)  -->
 - [Repository 📖](https://github.com/JyjyStudio/argent-bank/tree/main/front)
 - [Back end Repository 📖](https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API)
 - [Api Documentation 📖](https://app.swaggerhub.com/apis-docs/JyjyStudio/bank-argent_transaction_api_documentation/1.0.0#/Transactions%20Module/put_transactions)
