@@ -254,7 +254,7 @@ definitions:
       id:
         type: integer
         example: 105
-      category:
+      selectedCategory:
         type: string
         example: Other
       note:
