@@ -19,12 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   disableReactDevTools();
 }
 
-// testing if we have a root element before invoking ReactDOM.createRoot (typescript)
-const rootElement = document.getElementById('root')
-if (!rootElement) throw new Error('Failed to find the root element')
-
-const root = ReactDOM.createRoot(rootElement)
-root.render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
@@ -42,4 +37,4 @@ root.render(
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>
-)
+  )
