@@ -3,7 +3,7 @@
 ArgentBank is a banking application for individuals. Project 13 of the OpenClassrooms "Web app developer - JavaScript React" course. For this project I'm using TypeScript, React, React Router, and Redux-toolkit.
 
 
-![homepage](https://raw.githubusercontent.com/JyjyStudio/argent-bank/main/front/src/assets/homepage.png "homepage")
+![homepage](src/assets/homepage.png "homepage")
 
 **Useful links:**
 <!-- - [Live demo 🌍](https://jyjystudio.github.io/argent-bank/)  -->
