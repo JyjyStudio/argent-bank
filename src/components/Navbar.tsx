@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Img from './Img'
 import Logo from '../assets/argentBankLogo.png'
 import SignInIcon from '../assets/icon-login.png'
@@ -22,10 +22,12 @@ export default function Navbar(): JSX.Element {
 	const userInfos = useTsSelector(getUserInfosFromState)
 
 	const dispatch = useTsDispatch()
+	const navigate = useNavigate()
 
 	const resetCredentials = () => {
 		dispatch(resetAuth())
 		dispatch(resetUser())
+		navigate('/')
 	}
 
 	return (

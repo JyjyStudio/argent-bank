@@ -5,8 +5,7 @@ import storage from 'redux-persist/lib/storage'
 import { userSliceV2 } from '../../features/user/userSlice'
 import { themeSlice } from '../../features/theme/themeSlice'
 
-// creation et configuration du store
-
+// configuration de redux-persist
 const userPersistConfig = {
 	key: 'user',
 	storage,
@@ -26,14 +25,12 @@ const themePersistConfig = {
 }
 
 const rootReducer = combineReducers({
-	authentication: persistReducer(
-		authPersistConfig,
-		authenticationSlice.reducer
-	),
+	authentication: persistReducer(authPersistConfig, authenticationSlice.reducer),
 	userInfos: persistReducer(userPersistConfig, userSliceV2.reducer),
 	theme: persistReducer(themePersistConfig, themeSlice.reducer),
 })
 
+// creation et configuration du store
 export const store = configureStore({
 	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) =>

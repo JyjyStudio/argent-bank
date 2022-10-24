@@ -40,7 +40,7 @@ export default function Profile(): JSX.Element {
 		}
 
 		// navigate to login page if user doesn't have a token
-		!userToken && navigate('/')
+		!userToken && navigate('/login')
 
 		// set the focus on the input on editing
 		firstnameInput.current?.focus()
@@ -248,6 +248,7 @@ const TransactionsButton = styled(EditButton)`
 	border-color: #00bc77;
 	@media screen and (max-width: 720px) {
 		width: 100%;
+		margin: 1rem 0 0;
 	}
 `
 const EditContainer = styled.div`

@@ -25,7 +25,7 @@ const SpinnerContainer = styled.div`
 const Spinner = styled.div<LoaderPropTypes>`
 	position: absolute;
 	bottom: ${({bottom}) => bottom};
-	left: 46%;
+	left: 48%;
 	width: 64px;
 	height: 64px;
 	border: 8px solid #fff;

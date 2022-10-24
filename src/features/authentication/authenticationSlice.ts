@@ -61,6 +61,6 @@ interface UserCredentials {
 }
 interface InitialState {
 	status: string
-	response: any
+	response: null | Resolved | any
 	token: null | string
 }
