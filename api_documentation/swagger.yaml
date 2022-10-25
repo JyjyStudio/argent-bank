@@ -1,0 +1,398 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      parameters:
+        - in: header
+          type: string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transactions:
+        get:
+            security:
+                - Bearer: []
+                
+            tags:
+                - Transactions Module
+                
+            summary: Get all user transactions
+            
+            description: returns an array with all transactions of the logged-in user
+            
+            parameters:
+                - in: header
+                  name: Authorization
+                  description: Attach Bearer JWT token
+                  type: string
+                  required: true
+        
+            produces:
+                - application/json
+            responses:
+              '200':
+                description: User profile retrieved successully
+                schema:
+                  type: array
+                  items:
+                      $ref: '#/definitions/Transaction'
+              '400':
+                  description: Invalid Token
+              '500':
+                  description: Internal Server Error
+        put:
+            tags:
+                - Transactions Module
+                                
+            summary: Update an existing transaction
+            
+            security:
+                - Bearer: []
+            
+            description: api for modify the category or a note of a transaction
+            
+            parameters:
+                - name: body
+                  in: body
+                  description: id, category and note of transaction that needs to edit
+                  required: true
+                  schema:
+                    $ref: '#/definitions/Body'
+
+                - in: header
+                  name: Authorization
+                  description: Attach Bearer JWT token
+                  type: string
+                  required: true
+
+            responses:
+                '200':
+                    description: Transactions data retrieved successully
+                    schema:
+                      type: array
+                      items:
+                        $ref: '#/definitions/EditedTransaction'
+                '400':
+                    description: Invalid id or token supplied
+                '500':
+                    description: Internal Server Error
+
+  /transactions/{id}:
+        get:
+            security:
+                - Bearer: []
+                
+            tags:
+                - Transactions Module
+                
+            summary: Get only one transaction with its id
+            
+            description: returns a single transaction to display it in another view
+            
+            parameters:
+              - in: path
+                name: id
+                description: id of the transaction that needs to be viewed
+                required: true
+                type: integer
+                
+              - in: header
+                name: Authorization
+                description: Attach Bearer JWT token
+                type: string
+                required: true
+        
+            produces:
+                - application/json
+            responses:
+              '200':
+                description: Transaction retrieved successully
+                schema:
+                  type: array
+                  items:
+                      $ref: '#/definitions/Transaction'
+              '400':
+                  description: Invalid Token or Id
+              '404':
+                  description: Transaction not found
+              '500':
+                  description: Internal Server Error
+        delete: 
+            security:
+                - Bearer: []
+                
+            tags:
+                - Transactions Module
+                
+            summary: Delete a transaction with its id
+            
+            description: API for deleting a transaction
+            
+            parameters:
+              - in: path
+                name: id
+                description: id of the transaction that will be deleted
+                required: true
+                type: integer
+                
+              - in: header
+                name: Authorization
+                description: Attach Bearer JWT token
+                type: string
+                required: true
+      
+            produces:
+                - application/json
+            responses:
+              '200':
+                description: Transaction deleted successully
+              '400':
+                  description: Invalid token or id supplied
+              '404':
+                  description: Transaction not found
+              '500':
+                  description: Internal Server Error
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+      firstName:
+        type: string
+        description: user first name
+      lastName:
+        type: string
+        description: user last name
+  Login:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  UserProfile:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+  Transaction:
+      properties: 
+        id:
+          type: integer
+          example: 105
+        date:
+          type: string
+          example: October 21th, 2022
+        description:
+            type: string
+            example: Golden Sun Bakery
+        amount:
+            type: integer
+            example: 5
+        balance:
+            type: integer
+            example: 2097.55
+        type:
+            type: string
+            example: Electronic
+        Category:
+          type: array
+          example: 
+            - Food 
+            - Housing 
+            - Financial fees
+            - Withdrawal
+            - Deposit
+            - Hobbies
+            - Other
+        selectedCategory: 
+            type: string
+            example: Food
+        note:
+            type: string
+            example: Main street Food Truck
+  Body:
+      type: object
+      properties:
+          id:
+            type: integer
+            example: 105
+          category: 
+            type: string
+            example: Other
+          note:
+            type: string
+            example: Gaz station
+            
+  EditedTransaction:
+        properties: 
+            id:
+              type: integer
+              example: 105
+            date:
+              type: string
+              example: October 21th, 2022
+            description:
+                type: string
+                example: Golden Sun Bakery
+            amount:
+                type: integer
+                example: 5
+            balance:
+                type: integer
+                example: 2097.55
+            type:
+                type: string
+                example: Electronic
+            Category:
+              type: array
+              example: 
+                - Food 
+                - Housing 
+                - Financial fees
+                - Withdrawal
+                - Deposit
+                - Hobbies
+                - Other
+            selectedCategory: 
+                type: string
+                example: Other
+            note:
+                type: string
+                example: Gaz Station
