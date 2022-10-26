@@ -6,7 +6,7 @@ interface InitialState {
 
 //creation d'une partie de notre store (slice). Contient le nom du slice, son state initial et les reducers
 const initialState: InitialState = {
-	theme: 'dark'
+	theme: 'light'
 }
 export const themeSlice = createSlice({
 	name: 'theme',
