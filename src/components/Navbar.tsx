@@ -1,14 +1,13 @@
-import styled from 'styled-components'
-import { Link, useNavigate } from 'react-router-dom'
-import Img from './Img'
-import Logo from '../assets/argentBankLogo.png'
-import SignInIcon from '../assets/icon-login.png'
-import SignOutIcon from '../assets/icon-logout.png'
-import { resetAuth } from '../features/authentication/authenticationSlice'
-import { resetUser } from '../features/user/userSlice'
-import { getTokenFromState } from '../features/authentication/selectors'
-import { getUserInfosFromState } from '../features/user/selectors'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
+import { getTokenFromState } from '../features/authentication/selectors'
+import { toggleTheme } from '../features/theme/themeSlice'
+import { FaUserCircle } from 'react-icons/fa'
+import { MdLightMode } from 'react-icons/md'
+import { Link } from 'react-router-dom'
+import Logo from '../assets/argentBankLogo.png'
+import LoggedNavbar from './LoggedNavbar'
+import styled from 'styled-components'
+import Img from './Img'
 
 /**
  * The navbar component
@@ -17,59 +16,31 @@ import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
  * @component
  */
 export default function Navbar(): JSX.Element {
+
 	// user token from redux store
 	const userToken = useTsSelector(getTokenFromState)
-	const userInfos = useTsSelector(getUserInfosFromState)
-
 	const dispatch = useTsDispatch()
-	const navigate = useNavigate()
-
-	const resetCredentials = () => {
-		dispatch(resetAuth())
-		dispatch(resetUser())
-		navigate('/')
-	}
 
 	return (
 		<Nav>
 			<Link to="/">
 				<Img src={Logo} width="200px" alt="logo argentBank" />
 			</Link>
-			{
-				/* if user connected return name + logout else return login */
-				userToken ? (
-					<SignOutContainer>
-						<NavLink to="/profile">
-							<Img
-								src={SignInIcon}
-								width="25px"
-								margin="0 5px 0 0"
-								alt="profile icon"
-							/>
-							<Span>{userInfos.firstname}</Span>
-						</NavLink>
-						<Button onClick={resetCredentials}>
-							<Img
-								src={SignOutIcon}
-								width="20px"
-								margin="0 5px 0 0"
-								alt="sign out icon"
-							/>
-							<Span>Sign Out</Span>
-						</Button>
-					</SignOutContainer>
-				) : (
+			<RightNavContainer>
+				<ThemeBtn onClick={ () => dispatch(toggleTheme()) }>
+					<Span>Theme</Span> <MdLightMode size='1.4rem' />
+				</ThemeBtn>
+
+				{/* if user connected return name + logout else return login */
+				userToken ?
+					<LoggedNavbar />
+				:
 					<NavLink to="/login">
-						<Img
-							src={SignInIcon}
-							width="25px"
-							margin="0 5px 0 0"
-							alt="sign in icon"
-						/>
+						<FaUserCircle size='1.4rem' />
 						<Span>Sign In</Span>
 					</NavLink>
-				)
-			}
+				}
+			</RightNavContainer>
 		</Nav>
 	)
 }
@@ -79,19 +50,17 @@ const Nav = styled.nav`
 	align-items: center;
 	justify-content: space-between;
 	padding: 5px 20px;
+	border-bottom: 2px solid #ccc;
+	@media (max-width: 700px) {
+		flex-direction: column;
+	}
 	@media (max-width: 389px) {
 		font-size: calc(15px + 2vw);
 	}
 `
-const SignOutContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`
 const Span = styled.span`
 	font-weight: bold;
-	color: #2c3e50;
-	margin-right: 1rem;
+	margin:	0 .7rem 0 .5rem;
 `
 const NavLink = styled(Link)`
 	display: flex;
@@ -103,17 +72,26 @@ const NavLink = styled(Link)`
 		text-decoration: underline;
 	}
 `
-const Button = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: #2c3e50;
+const ThemeBtn = styled.button`
 	background-color: transparent;
-	font-weight: bold;
-	font-size: 1rem;
-	cursor: pointer;
+	display: flex;
+	padding: 2px 5px;
+    border-radius: 3px;
 	border: none;
-	:hover {
-		text-decoration: underline;
+	cursor: pointer;
+	font-size: large;
+	color: inherit;
+	span {
+		margin-right: 10px;
+	}
+`
+
+const RightNavContainer = styled.div`
+	width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+	@media (max-width: 700px) {
+		width: 100%;
 	}
 `
