@@ -23,6 +23,7 @@ export default function Hero(): JSX.Element {
 
 
 const Contrainer = styled.section`
+	color: black;
 	position: relative;
 	background-image: url(${HeroImg});
 	background-size: cover;
