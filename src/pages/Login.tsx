@@ -1,12 +1,11 @@
 import styled from 'styled-components'
-import Img from '../components/Img'
-import SignInIcon from '../assets/icon-login.png'
 import Loader from '../components/Loader'
 import React, { useState, useEffect } from 'react'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
 import { useNavigate } from 'react-router-dom'
 import { getToken } from '../features/authentication/authenticationSlice'
 import { getStatus, getResponse, getTokenFromState } from '../features/authentication/selectors'
+import { FaUserCircle } from 'react-icons/fa';
 
 /**
  * login page
@@ -43,11 +42,11 @@ export default function Login():JSX.Element {
 	// view
 	return (
 		<Container>
-			{loading && <Loader bottom="20%" />}
+			{loading && <Loader bottom="18%" />}
 			{!userToken && (
 				<FormContainer>
 					<div>
-						<Img src={SignInIcon} alt="Sign In icon" width="30px" />
+						<FaUserCircle size='2rem' />
 						<h1>Sign In</h1>
 					</div>
 					<form onSubmit={handleSubmit}>
@@ -95,7 +94,6 @@ export default function Login():JSX.Element {
 }
 
 const Container = styled.main`
-	background-color: #12002b;
 	flex: 1;
 	h1 {
 		margin: 0.83rem 0;
@@ -117,6 +115,7 @@ const Container = styled.main`
 `
 const FormContainer = styled.section`
 	background-color: white;
+	color: black;
 	width: 300px;
 	margin: 0 auto;
 	margin-top: 3rem;
@@ -125,6 +124,7 @@ const FormContainer = styled.section`
 	flex-direction: column;
 	justify-content: center;
 	border-radius: 5px;
+	border: 2px #34495e solid;
 	img {
 		margin: 0 auto;
 	}

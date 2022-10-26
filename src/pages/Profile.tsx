@@ -182,8 +182,6 @@ export default function Profile(): JSX.Element {
 }
 
 const Container = styled.main`
-	background-color: ${({ theme }) =>
-		theme === 'dark' ? '#12002b' : '#ecf0f1'};
 	flex: 1;
 `
 const UserInfos = styled.div`
@@ -211,6 +209,7 @@ const AccountSection = styled.section`
 	align-items: center;
 	border: 1px solid black;
 	background-color: #fff;
+	color: black;
 	width: 80%;
 	margin: 0 auto;
 	padding: 1.5rem;

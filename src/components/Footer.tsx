@@ -1,10 +1,5 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { toggleTheme } from '../features/theme/themeSlice'
-import { useTsDispatch } from '../utils/redux/hooks'
-import { getTheme } from '../features/theme/selector'
-
 
 /**
  * Footer component
@@ -15,24 +10,15 @@ import { getTheme } from '../features/theme/selector'
 export default function Footer():JSX.Element {
 	
 	const year = new Date().getFullYear()
-	const theme = useSelector(getTheme)
-
-	const dispatch = useTsDispatch()
-	const toggle = () => dispatch(toggleTheme())
 
 	return (
-		<FooterContainer theme={theme}>
+		<FooterContainer>
 			<p>Copyright {year} <StyledLink to="/">Argent Bank</StyledLink></p>
-			{/*<NightModeBtn
-				onClick={toggle}
-			>
-			 <Icon theme={theme}>{theme === 'light' ? '🌙' : '☀️'}</Icon> 
-			</NightModeBtn>*/}
 		</FooterContainer>
 	)
 }
 
-const FooterContainer = styled.footer<ThemeProps>`	
+const FooterContainer = styled.footer`	
 	padding: 1.5rem;
 	display: flex;
 	justify-content: center;
@@ -40,10 +26,6 @@ const FooterContainer = styled.footer<ThemeProps>`
 	width: 100%;
     margin: 0 auto;
 	border-top: 2px solid #ccc;
-	// color: ${({ theme }) => (theme === 'dark' ? '#ecf0f1' : '#12002b')};
-	color: #12002b;
-	// background: ${({ theme }) => (theme === 'dark' ? '#12002b' : '#ecf0f1')};
-	background: #fff;
 `
 const StyledLink = styled(Link)`
 	color: inherit;
@@ -53,18 +35,3 @@ const StyledLink = styled(Link)`
 		text-decoration: underline;
 	}
 `
-const NightModeBtn = styled.button`
-	background-color: transparent;
-	font-size: 2rem;
-	border: none;
-`
-const Icon = styled.span<ThemeProps>`
-	margin-left: 1.5rem;
-	cursor: pointer;
-	&:hover {
-		filter: ${({ theme }) => (theme === 'dark' ? 'drop-shadow(0px 0px 15px #fff)' : 'drop-shadow(0px 0px 15px black)')};
-	}
-`
-interface ThemeProps {
-	theme: boolean
-}

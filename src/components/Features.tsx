@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import ChatIcon from '../assets/icon-chat.png'
-import MoneyIcon from '../assets/icon-money.png'
-import SecurityIcon from '../assets/icon-security.png'
 import Card from './Card'
+import { IoShieldCheckmarkSharp } from 'react-icons/io5'
+import { GiTakeMyMoney } from 'react-icons/gi'
+import { BiSupport } from 'react-icons/bi'
 
 /**
  * The Feature Homepage component
@@ -17,9 +17,9 @@ export default function Features(): JSX.Element {
 	return (
 		<Container>
 			<h2 className="sr-only">Features</h2>
-			<Card imgSrc={ChatIcon} imgLabel="Chat Icon" title="You are our #1 priority" text={ChatText} />
-			<Card imgSrc={MoneyIcon} imgLabel="Money Icon" title="More savings means higher rates" text={MoneyText} />
-			<Card imgSrc={SecurityIcon} imgLabel="Security Icon" title="Security you can trust" text={securityText} />
+			<Card Icon={BiSupport} title="You are our #1 priority" text={ChatText} />
+			<Card Icon={GiTakeMyMoney} title="More savings means higher rates" text={MoneyText} />
+			<Card Icon={IoShieldCheckmarkSharp} title="Security you can trust" text={securityText} />
 		</Container>
 	)
 }
