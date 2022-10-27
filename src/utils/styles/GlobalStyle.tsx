@@ -1,7 +1,11 @@
 import { createGlobalStyle } from 'styled-components'
+import { getTheme } from '../../features/theme/selector'
+import { useTsSelector } from '../redux/hooks'
 
 export default function GlobalStyle() {
-	return <StyledGlobalStyle />
+	const theme = useTsSelector(getTheme)
+
+	return <StyledGlobalStyle theme={theme}/>
 }
 
 const StyledGlobalStyle = createGlobalStyle`
@@ -12,7 +16,13 @@ const StyledGlobalStyle = createGlobalStyle`
     }
 
 	body, html, #root {
-		height: 100%;
+		min-height: 100vh;
+		color: ${({ theme }) => (theme === 'dark' ? '#ecf0f1' : '#12002b')};
+		background: ${({ theme }) => (
+			theme === 'dark' 
+			? ' linear-gradient(178.6deg, rgb(20, 36, 50) 11.8%, rgb(124, 143, 161) 83.8%) ' 
+			: ' linear-gradient(178.6deg, rgb(232, 245, 253) 3.3%, rgb(252, 253, 255) 109.6%) '
+		)};
 	}
 
 	#root {
@@ -22,11 +32,10 @@ const StyledGlobalStyle = createGlobalStyle`
 	}
 	
 	body {
-		font-family: Avenir, Helvetica, Arial, sans-serif;
+		font-family: 'Fira sans', sans-serif;
 		webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		text-align: center;
-		color: #2c3e50;
 	}
 
 	html {
