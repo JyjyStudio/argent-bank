@@ -9,7 +9,8 @@ import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
-import Login from './pages/Login'
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 import Profile from './pages/Profile'
 import GlobalStyle from './utils/styles/GlobalStyle'
 import NotFount from './pages/404'
@@ -28,7 +29,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/login" element={<Login />} />
+						<Route path="/signin" element={<SignIn />} />
+						<Route path="/signup" element={<SignUp />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="*" element={<NotFount />} />
 					</Routes>
