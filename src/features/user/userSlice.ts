@@ -8,7 +8,7 @@ const initialState: InitialState = {
 	firstname: null,
 	lastname: null,
 }
-export const userSliceV2 = createSlice({
+export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
@@ -39,7 +39,7 @@ export const userSliceV2 = createSlice({
 	},
 })
 
-export const { resetUser } = userSliceV2.actions 
+export const { resetUser } = userSlice.actions 
 
 export const getUserInfos = createAsyncThunk(
 	'user/getInfos',

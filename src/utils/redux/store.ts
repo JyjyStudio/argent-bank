@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { authenticationSlice } from '../../features/authentication/authenticationSlice'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { userSliceV2 } from '../../features/user/userSlice'
+import { userSlice } from '../../features/user/userSlice'
 import { themeSlice } from '../../features/theme/themeSlice'
 
 // configuration de redux-persist
@@ -26,7 +26,7 @@ const themePersistConfig = {
 
 const rootReducer = combineReducers({
 	authentication: persistReducer(authPersistConfig, authenticationSlice.reducer),
-	userInfos: persistReducer(userPersistConfig, userSliceV2.reducer),
+	userInfos: persistReducer(userPersistConfig, userSlice.reducer),
 	theme: persistReducer(themePersistConfig, themeSlice.reducer),
 })
 
