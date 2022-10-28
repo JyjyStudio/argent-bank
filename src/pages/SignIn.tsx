@@ -2,18 +2,19 @@ import styled from 'styled-components'
 import Loader from '../components/Loader'
 import React, { useState, useEffect } from 'react'
 import { useTsSelector, useTsDispatch } from '../utils/redux/hooks'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getToken } from '../features/authentication/authenticationSlice'
 import { getStatus, getResponse, getTokenFromState } from '../features/authentication/selectors'
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserAstronaut } from 'react-icons/fa';
+import Input from '../components/Input'
 
 /**
- * login page
- * @name Login
+ * Signin page
+ * @name SignIn
  * @component
- * @returns {JSX.Element} the login page.
+ * @returns {JSX.Element} the signin page.
  */
-export default function Login():JSX.Element {
+export default function SignIn():JSX.Element {
 	//local state
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -46,41 +47,15 @@ export default function Login():JSX.Element {
 			{!userToken && (
 				<FormContainer>
 					<div>
-						<FaUserCircle size='2rem' />
+						<FaUserAstronaut size='2rem' />
 						<h1>Sign In</h1>
 					</div>
 					<form onSubmit={handleSubmit}>
-						<InputContainer>
-							<label htmlFor="email">Email</label>
-							<input
-								type="text"
-								id="email"
-								value={email}
-								onChange={(e) => {
-									setEmail(e.target.value)
-								}}
-							/>
-						</InputContainer>
-						<InputContainer>
-							<label htmlFor="password">Password</label>
-							<input
-								type="password"
-								id="password"
-								autoComplete="on"
-								value={password}
-								onChange={(e) => {
-									setPassword(e.target.value)
-								}}
-							/>
-						</InputContainer>
+
+						<Input type='email' name='email' value={email} setFunction={setEmail} required/>
+						<Input type='password' name='password' value={password} setFunction={setPassword} autoComplete="on" required/>
 						<CheckboxContainer>
-							<input
-								type="checkbox"
-								id="remember-me"
-								onClick={() => {
-									setRememberMe(!rememberMe)
-								}}
-							/>
+							<input type="checkbox" id="remember-me" onClick={() => { setRememberMe(!rememberMe) }} />
 							<label htmlFor="remember-me">Remember me</label>
 						</CheckboxContainer>
 
@@ -89,6 +64,10 @@ export default function Login():JSX.Element {
 					</form>
 				</FormContainer>
 			)}
+			<SignUp>
+				<span>New to Argent-Bank?</span> 
+				<StyledLink to="/signup">Sign Up</StyledLink>
+			</SignUp>
 		</Container>
 	)
 }
@@ -129,18 +108,9 @@ const FormContainer = styled.section`
 		margin: 0 auto;
 	}
 `
-const InputContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	text-align: left;
-	margin-bottom: 1rem;
-	border-radius: 3px;
-	label {
-		margin-bottom: 7px;
-	}
-`
 const CheckboxContainer = styled.div`
 	display: flex;
+	margin-top: 1rem;
 `
 const SignInButton = styled.button`
 	color: #fff;
@@ -154,10 +124,22 @@ const SignInButton = styled.button`
 	background-color: #00bc77;
 	cursor: pointer;
 	border-radius: 3px;
-	text-decoration: underline;
 `
 const Error = styled.p`
 	color: red;
 	font-size: 1rem;
 	margin-top: 1rem;
+`
+const SignUp = styled.p`
+	margin-top: 2rem;
+	span {
+		margin-right: .5rem;
+	}
+`
+const StyledLink = styled(Link)`
+	color: currentColor;
+	text-decoration: inherit;
+	&:hover {
+		border-bottom: 2px currentColor solid;
+	}
 `

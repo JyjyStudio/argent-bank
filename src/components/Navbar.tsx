@@ -31,11 +31,11 @@ export default function Navbar(): JSX.Element {
 					<Span>Theme</Span> <MdLightMode size='1.4rem' />
 				</ThemeBtn>
 
-				{/* if user connected return name + logout else return login */
+				{/* if user connected return name + logout else return signin */
 				userToken ?
 					<LoggedNavbar />
 				:
-					<NavLink to="/login">
+					<NavLink to="/signin">
 						<FaUserCircle size='1.4rem' />
 						<Span>Sign In</Span>
 					</NavLink>

@@ -40,7 +40,7 @@ export default function Profile(): JSX.Element {
 		}
 
 		// navigate to login page if user doesn't have a token
-		!userToken && navigate('/login')
+		!userToken && navigate('/signin')
 
 		// set the focus on the input on editing
 		firstnameInput.current?.focus()
