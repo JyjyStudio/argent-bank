@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { IoMdLogIn } from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import Input from '../components/Input'
-import createUser from '../features/user/createUser'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
 
 export default function SignUp() {
 	//local state
@@ -12,48 +14,48 @@ export default function SignUp() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [repeatPassword, setRepeatPassword] = useState('')
-	const [validation, setValidation] = useState('')
-	const [currentUser, setCurrentUser] = useState({
-		email: '',
-		password: '',
-		firstName: '',
-		lastName: '',
-	})
+	const [errorMsg, setErrorMsg] = useState('')
+
 
 	const navigate = useNavigate()
-
-	useEffect(() => {
-		setCurrentUser({
-			email,
-			password,
-			firstName:firstname,
-			lastName:lastname,
-		})
-
-	}, [email, firstname, lastname, password])
-	
+	const postNewUser = async (currentUser:CurrentUser) => await axios.post('http://localhost:3001/api/v1/user/signup', currentUser)
 
 	// submit handler
 	const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
 
 		event.preventDefault()
+
 		// check du password
 		if((password.length || repeatPassword.length) < 6) {
-			setValidation("Password is too short. (6 characters minimum).")
+			setErrorMsg("Password is too short. (6 characters minimum).")
 			return
 		}
 		else if(password !== repeatPassword) {
-			setValidation("Password do not match.")
+			setErrorMsg("Password do not match.")
 			return
 		}
 
-		const response = await createUser(currentUser)
-		console.log('response:', response)
-		if(response.status === 200) {
-			setValidation(response.data)
-			navigate('/signin')
-		} else setValidation(response.data.message)
+		// api request
+		const currentUser = {
+			email,
+			password,
+			firstName: firstname,
+			lastName: lastname,
+		}
 		
+		try {
+			await postNewUser(currentUser)
+			setErrorMsg("")
+			toast.success("User successfully added 👌", { icon: "🚀"})
+			setTimeout(() => {
+				navigate('/signin')
+			}, 2500);
+		} 
+		catch (err) {
+			if (axios.isAxiosError(err)) {
+				setErrorMsg(`${err.response?.data.message} 🤯`)
+			}
+		} 
 	}
 
 	return (
@@ -69,9 +71,9 @@ export default function SignUp() {
 						<Input type='email' name='email' value={email} setFunction={setEmail} required/>
 						<Input type='password' name='password' value={password} setFunction={setPassword} autoComplete="on" required/>
 						<Input type='password' name='repeat-password' value={repeatPassword} setFunction={setRepeatPassword} autoComplete="on" required/>
-						
 						<SignUpButton type="submit">Sign Up</SignUpButton>
-						<Error>{validation}</Error>
+						<Error>{errorMsg}</Error>
+						<ToastContainer autoClose={2500}/>
 					</form>
 				</FormContainer>
 		</Container>
@@ -130,3 +132,10 @@ const Error = styled.p`
 	font-size: 1rem;
 	margin-top: 1rem;
 `
+
+interface CurrentUser {
+	email: string
+	password: string
+	firstName: string
+	lastName: string
+}
